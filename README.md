@@ -224,7 +224,7 @@ ORDER BY
 
 <div id='q8'/>
   
-## Calculate cohort map from product view to addtocart to purchase in Jan, Feb and March 2017.
+## Query 08: Calculate cohort map from product view to addtocart to purchase in Jan, Feb and March 2017.
 
 ```sql
 WITH cart AS (
