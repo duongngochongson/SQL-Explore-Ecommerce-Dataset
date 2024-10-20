@@ -18,7 +18,7 @@ The project aims to explore some insights such as on user engagement and revenue
 
 **Platform**: Google Bigquery
 
-**Notable Query**: Window functions, nested queries (CTEs), and data unnesting techniques.
+**Main Techniques**: Window functions, nested queries (CTEs), and data unnesting techniques.
 
 **Goal**: Based on the dataset, I used queries to explore multiple aspects, such as bounce rate, revenue by traffic source over time, or average number of pageviews by purchaser type. 
 
