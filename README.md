@@ -43,6 +43,13 @@ WHERE
 GROUP BY 
     month;
 ```
+| month  | visits | pageviews | transactions |
+|--------|--------|-----------|--------------|
+| 201701 | 64694  | 257708    | 713          |
+| 201702 | 62192  | 233373    | 733          |
+| 201703 | 69931  | 259522    | 993          |
+
+✅ March 2017 had the most transactions, while January 2017 had the highest visits.
 
 <div id='q2'/>
   
@@ -61,6 +68,17 @@ GROUP BY
 ORDER BY 
     total_visits DESC;
 ```
+| Row | source                | total_visits | total_no_of_bounces | bounce_rate |
+|-----|-----------------------|--------------|---------------------|-------------|
+| 1   | google                | 38400        | 19798               | 51.557      |
+| 2   | (direct)              | 19891        | 8606                | 43.266      |
+| 3   | youtube.com           | 6351         | 4238                | 66.730      |
+| 4   | analytics.google.com  | 1972         | 1064                | 53.955      |
+| 5   | Partners              | 1788         | 936                 | 52.349      |
+| 6   | m.facebook.com        | 669          | 430                 | 64.275      |
+| 7   | ...                   | ...          |                     |             |
+
+✅ Google had the highest total visits, while Youtube and Facebook had the high bounce rate.
 
 <div id='q3'/>
 
@@ -104,6 +122,21 @@ UNION ALL
 SELECT * FROM weekly_revenue
 ORDER BY revenue DESC;
 ```
+| Row | time_type | time   | source   | revenue    |
+|-----|-----------|--------|----------|------------|
+| 1   | Month     | 201706 | (direct) | 97333.6197 |
+| 2   | Week      | 201724 | (direct) | 30908.9099 |
+| 3   | Week      | 201725 | (direct) | 27295.3199 |
+| 4   | Month     | 201706 | google   | 18757.1799 |
+| 5   | Week      | 201723 | (direct) | 17325.6799 |
+| 6   | Week      | 201726 | (direct) | 14914.8100 |
+| 7   | Week      | 201724 | google   | 9217.1700  |
+| 8   | Month     | 201706 | dfa      | 8862.2300  |
+| 9   | Week      | 201722 | (direct) | 6888.9000  |
+| 10  | Week      | 201726 | google   | 5330.5700  |
+| 10  | ...       |        |          |            |
+
+✅ June 2017 had the highest revenue from (direct) sources, while Google had notable revenue as well.
 
 <div id='q4'/>
   
@@ -150,6 +183,12 @@ FULL OUTER JOIN
     non_purchase_data n ON p.month = n.month
 ORDER BY p.month;
 ```
+| Row | month  | avg_pageviews_purchase  | avg_pageviews_non_purchase  |
+|-----|--------|-------------------------|-----------------------------|
+| 1   | 201706 | 94.02050113895217        | 316.86558846341671         |
+| 2   | 201707 | 124.23755186721992       | 334.05655979568053         |
+
+✅ Compared to June 2017, July 2017 had higher average pageviews per purchase and slightly higher average pageviews for non-purchase visitors.
 
 <div id='q5'/>
   
@@ -167,6 +206,9 @@ WHERE
     totals.transactions >= 1
     AND product.productRevenue IS NOT NULL;
 ```
+| Month  | Avg_total_transactions_per_user |
+|--------|---------------------------------|
+| 201707 | 4.16390041493776                |
 
 <div id='q6'/>
 
@@ -186,6 +228,9 @@ WHERE
 GROUP BY 
     month;
 ```
+| Month  | avg_revenue_by_user_per_visit |
+|--------|-------------------------------|
+| 201707 | 43.86                         |
 
 <div id='q7'/>
   
@@ -221,6 +266,17 @@ GROUP BY
 ORDER BY 
     quantity DESC;
 ```
+| Row | other_purchased_products                | quantity |
+|-----|-----------------------------------------|----------|
+| 1   | Google Sunglasses                       | 20       |
+| 2   | Google Women's Vintage Hero ...         | 7        |
+| 3   | SPF-15 Slim & Slender Lip Balm          | 6        |
+| 4   | Google Women's Short Sleeve ...         | 4        |
+| 5   | YouTube Men's Fleece Hoodie ...         | 3        |
+| 6   | Google Men's Short Sleeve Bad...        | 3        |
+| 7   | ...                                     |          |
+
+✅ Customers who bought the YouTube Men's Vintage Henley favored Google sunglasses, highlighting a strong interest in casual wear and accessories across Google, YouTube, and Android.
 
 <div id='q8'/>
   
@@ -288,3 +344,10 @@ JOIN
 ORDER BY 
     month;
 ```
+| Row | month  | num_product_view | num_addtocart | num_purchase | add_to_cart_rate | purchase_rate |
+|-----|--------|------------------|---------------|--------------|------------------|---------------|
+| 1   | 201701 | 25787            | 7342          | 2143         | 28.47            | 8.31          |
+| 2   | 201702 | 21489            | 7360          | 2060         | 34.25            | 9.59          |
+| 3   | 201703 | 23549            | 8782          | 2977         | 37.29            | 12.64         |
+
+✅ March 2017 showed an upward trend with the highest purchase rate and number of purchases, while February 2017 had the highest add-to-cart rate, indicating improved engagement over the months.
