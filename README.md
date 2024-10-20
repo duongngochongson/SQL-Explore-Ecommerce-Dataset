@@ -136,8 +136,6 @@ ORDER BY revenue DESC;
 | 10  | Week      | 26-2017 | google   | 5330.57  |
 | 10  | ...       |        |          |            |
 
-✅ June 2017 had the highest revenue from (direct) s2017 | 124.24       | 334.06         |
-
 ✅ Compared to June 2017, July 2017 had higher average pageviews per purchase and slightly higher average pageviews for non-purchase visitors.
 
 <div id='q5'/>
@@ -226,7 +224,7 @@ ORDER BY
 | 6   | Google Men's Short Sleeve Bad...        | 3        |
 | 7   | ...                                     |          |
 
-✅ Customers who bought the YouTube Men's Vintage Henley favored Google sunglasses, highlighting a strong interest in casual wear and accessories across Google, YouTube, and Android.
+✅ Customers who bought the YouTube Men's Vintage Henley favored Google sunglasses, highlighting a strong interest in casual wear and accessories across Google, or YouTube.
 
 <div id='q8'/>
   
