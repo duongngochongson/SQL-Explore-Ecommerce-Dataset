@@ -32,7 +32,7 @@ The project aims to explore some insights such as on user engagement and revenue
 
 ```sql
 SELECT 
-    FORMAT_DATE("%b-%Y", PARSE_DATE("%Y%m%d", date)) AS month,
+    FORMAT_DATE("%m-%Y", PARSE_DATE("%Y%m%d", date)) AS month,
     SUM(totals.visits) AS number_of_visit,
     SUM(totals.pageviews) AS number_of_pageview,
     SUM(totals.transactions) AS number_of_transaction
@@ -45,9 +45,9 @@ GROUP BY
 ```
 | month  | visits | pageviews | transactions |
 |--------|--------|-----------|--------------|
-| 201701 | 64694  | 257708    | 713          |
-| 201702 | 62192  | 233373    | 733          |
-| 201703 | 69931  | 259522    | 993          |
+| 01-2017 | 64694  | 257708    | 713          |
+| 02-2017 | 62192  | 233373    | 733          |
+| 03-2017 | 69931  | 259522    | 993          |
 
 ✅ March 2017 had the most transactions, while January 2017 had the highest visits.
 
@@ -70,12 +70,12 @@ ORDER BY
 ```
 | Row | source                | total_visits | total_no_of_bounces | bounce_rate |
 |-----|-----------------------|--------------|---------------------|-------------|
-| 1   | google                | 38400        | 19798               | 51.557      |
-| 2   | (direct)              | 19891        | 8606                | 43.266      |
-| 3   | youtube.com           | 6351         | 4238                | 66.730      |
-| 4   | analytics.google.com  | 1972         | 1064                | 53.955      |
-| 5   | Partners              | 1788         | 936                 | 52.349      |
-| 6   | m.facebook.com        | 669          | 430                 | 64.275      |
+| 1   | google                | 38400        | 19798               | 51.56      |
+| 2   | (direct)              | 19891        | 8606                | 43.27      |
+| 3   | youtube.com           | 6351         | 4238                | 66.73      |
+| 4   | analytics.google.com  | 1972         | 1064                | 53.96      |
+| 5   | Partners              | 1788         | 936                 | 52.35      |
+| 6   | m.facebook.com        | 669          | 430                 | 64.28      |
 | 7   | ...                   | ...          |                     |             |
 
 ✅ Google had the highest total visits, while Youtube and Facebook had the high bounce rate.
@@ -124,69 +124,19 @@ ORDER BY revenue DESC;
 ```
 | Row | time_type | time   | source   | revenue    |
 |-----|-----------|--------|----------|------------|
-| 1   | Month     | 201706 | (direct) | 97333.6197 |
-| 2   | Week      | 201724 | (direct) | 30908.9099 |
-| 3   | Week      | 201725 | (direct) | 27295.3199 |
-| 4   | Month     | 201706 | google   | 18757.1799 |
-| 5   | Week      | 201723 | (direct) | 17325.6799 |
-| 6   | Week      | 201726 | (direct) | 14914.8100 |
-| 7   | Week      | 201724 | google   | 9217.1700  |
-| 8   | Month     | 201706 | dfa      | 8862.2300  |
-| 9   | Week      | 201722 | (direct) | 6888.9000  |
-| 10  | Week      | 201726 | google   | 5330.5700  |
+| 1   | Month     | 06-2017 | (direct) | 97333.62 |
+| 2   | Week      | 24-2017 | (direct) | 30908.91 |
+| 3   | Week      | 25-2017 | (direct) | 27295.32 |
+| 4   | Month     | 06-2017 | google   | 18757.18 |
+| 5   | Week      | 23-2017 | (direct) | 17325.68 |
+| 6   | Week      | 26-2017 | (direct) | 14914.81 |
+| 7   | Week      | 24-2017 | google   | 9217.17  |
+| 8   | Month     | 06-2017 | dfa      | 8862.23  |
+| 9   | Week      | 22-2017 | (direct) | 6888.9  |
+| 10  | Week      | 26-2017 | google   | 5330.57  |
 | 10  | ...       |        |          |            |
 
-✅ June 2017 had the highest revenue from (direct) sources, while Google had notable revenue as well.
-
-<div id='q4'/>
-  
-## Query 04: Average number of pageviews by purchaser type (purchasers vs non-purchasers) in June, July 2017.
-
-```sql
-WITH purchase_data AS (
-    SELECT
-        FORMAT_DATE("%m-%Y", PARSE_DATE("%Y%m%d", date)) AS month,
-        ROUND(SUM(totals.pageviews) / COUNT(DISTINCT(fullVisitorId)), 2) AS avg_pageviews_purchase
-    FROM
-        `bigquery-public-data.google_analytics_sample.ga_sessions_2017*`,
-        UNNEST(hits) AS hits,
-        UNNEST(hits.product) AS product
-    WHERE
-        totals.transactions IS NOT NULL
-        AND product.productRevenue IS NOT NULL
-        AND _table_suffix BETWEEN '0601' AND '0731'
-    GROUP BY month
-),
-
-non_purchase_data AS (
-    SELECT
-        FORMAT_DATE("%m-%Y", PARSE_DATE("%Y%m%d", date)) AS month,
-        ROUND(SUM(totals.pageviews) / COUNT(DISTINCT(fullVisitorId)), 2) AS avg_pageviews_non_purchase
-    FROM
-        `bigquery-public-data.google_analytics_sample.ga_sessions_2017*`,
-        UNNEST(hits) AS hits,
-        UNNEST(hits.product) AS product
-    WHERE
-        totals.transactions IS NULL
-        AND product.productRevenue IS NULL
-        AND _table_suffix BETWEEN '0601' AND '0731'
-    GROUP BY month
-)
-
-SELECT
-    p.month,
-    p.avg_pageviews_purchase,
-    n.avg_pageviews_non_purchase
-FROM
-    purchase_data p
-FULL OUTER JOIN
-    non_purchase_data n ON p.month = n.month
-ORDER BY p.month;
-```
-| Row | month  | avg_pageviews_purchase  | avg_pageviews_non_purchase  |
-|-----|--------|-------------------------|-----------------------------|
-| 1   | 201706 | 94.02050113895217        | 316.86558846341671         |
-| 2   | 201707 | 124.23755186721992       | 334.05655979568053         |
+✅ June 2017 had the highest revenue from (direct) s2017 | 124.24       | 334.06         |
 
 ✅ Compared to June 2017, July 2017 had higher average pageviews per purchase and slightly higher average pageviews for non-purchase visitors.
 
@@ -208,7 +158,7 @@ WHERE
 ```
 | Month  | Avg_total_transactions_per_user |
 |--------|---------------------------------|
-| 201707 | 4.16390041493776                |
+| 201707 | 4.16                |
 
 <div id='q6'/>
 
@@ -230,7 +180,7 @@ GROUP BY
 ```
 | Month  | avg_revenue_by_user_per_visit |
 |--------|-------------------------------|
-| 201707 | 43.86                         |
+| 2017-07 | 43.86                         |
 
 <div id='q7'/>
   
